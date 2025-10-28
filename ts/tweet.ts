@@ -53,23 +53,25 @@ class Tweet {
     }
 
     get activityType():string {
+        const lowerText = this.text.toLowerCase();
+
         if (this.source != 'completed_event') {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        else if (this.text.includes("run")) {
+        else if (lowerText.includes(" run")) {
             return "run";
         }
-        else if (this.text.includes("bike")) {
+        else if (lowerText.includes(" bike") || lowerText.includes("biking")) {
             return "bike";
         }
-        else if (this.text.includes("walk")) {
+        else if (lowerText.includes(" walk")) {
             return "walk";
         }
-        else if (this.text.includes("elliptical")) {
+        else if (lowerText.includes(" elliptical")) {
             return "elliptical";
         }
-        else if (this.text.includes("chair ride")) {
+        else if (lowerText.includes(" chair ride")) {
             return "chair ride";
         }
         else {
@@ -78,7 +80,7 @@ class Tweet {
     }
 
     get distance():number {
-        if(this.source != 'completed_event') {
+        if(this.source != "completed_event") {
             return 0;
         }
         //TODO: parse the distance from the text of the tweet
@@ -90,7 +92,7 @@ class Tweet {
             const endIndex = this.text.indexOf(endMarker, startIndex);
             const distanceStr = this.text.substring(startIndex, endIndex);
 
-            return +distanceStr;
+            return +(distanceStr);
         }
         else if (this.text.startsWith("Just posted") && this.text.includes(" mi ")) {
             const startMarker = "Just posted a ";
@@ -100,18 +102,18 @@ class Tweet {
             const endIndex = this.text.indexOf(endMarker, startIndex);
             const distanceStr = this.text.substring(startIndex, endIndex);
 
-            return +distanceStr;
+            return +(distanceStr);
         }
 
         else if (this.text.startsWith("Just completed") && this.text.includes(" km ")) {
-            const startMarker = "Just posted a ";
+            const startMarker = "Just completed a ";
             const endMarker = " km ";
 
             const startIndex = this.text.indexOf(startMarker) + startMarker.length;
             const endIndex = this.text.indexOf(endMarker, startIndex);
             const distanceStr = this.text.substring(startIndex, endIndex);
 
-            return +distanceStr / 1.609;
+            return +(distanceStr) / 1.609;
         }
 
         else if (this.text.startsWith("Just posted") && this.text.includes(" km ")) {
@@ -122,7 +124,7 @@ class Tweet {
             const endIndex = this.text.indexOf(endMarker, startIndex);
             const distanceStr = this.text.substring(startIndex, endIndex);
 
-            return +distanceStr / 1.609;
+            return +(distanceStr) / 1.609;
         }
         return 0;
     }
