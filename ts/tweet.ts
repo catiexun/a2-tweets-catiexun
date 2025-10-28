@@ -57,14 +57,73 @@ class Tweet {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        return "";
+        else if (this.text.includes("run")) {
+            return "run";
+        }
+        else if (this.text.includes("bike")) {
+            return "bike";
+        }
+        else if (this.text.includes("walk")) {
+            return "walk";
+        }
+        else if (this.text.includes("elliptical")) {
+            return "elliptical";
+        }
+        else if (this.text.includes("chair ride")) {
+            return "chair ride";
+        }
+        else {
+            return "other";
+        }
     }
 
     get distance():number {
         if(this.source != 'completed_event') {
             return 0;
         }
-        //TODO: prase the distance from the text of the tweet
+        //TODO: parse the distance from the text of the tweet
+        if(this.text.startsWith("Just completed") && this.text.includes(" mi ")) {
+            const startMarker = "Just completed a ";
+            const endMarker = " mi ";
+
+            const startIndex = this.text.indexOf(startMarker) + startMarker.length;
+            const endIndex = this.text.indexOf(endMarker, startIndex);
+            const distanceStr = this.text.substring(startIndex, endIndex);
+
+            return +distanceStr;
+        }
+        else if (this.text.startsWith("Just posted") && this.text.includes(" mi ")) {
+            const startMarker = "Just posted a ";
+            const endMarker = " mi ";
+
+            const startIndex = this.text.indexOf(startMarker) + startMarker.length;
+            const endIndex = this.text.indexOf(endMarker, startIndex);
+            const distanceStr = this.text.substring(startIndex, endIndex);
+
+            return +distanceStr;
+        }
+
+        else if (this.text.startsWith("Just completed") && this.text.includes(" km ")) {
+            const startMarker = "Just posted a ";
+            const endMarker = " km ";
+
+            const startIndex = this.text.indexOf(startMarker) + startMarker.length;
+            const endIndex = this.text.indexOf(endMarker, startIndex);
+            const distanceStr = this.text.substring(startIndex, endIndex);
+
+            return +distanceStr / 1.609;
+        }
+
+        else if (this.text.startsWith("Just posted") && this.text.includes(" km ")) {
+            const startMarker = "Just posted a ";
+            const endMarker = " km ";
+
+            const startIndex = this.text.indexOf(startMarker) + startMarker.length;
+            const endIndex = this.text.indexOf(endMarker, startIndex);
+            const distanceStr = this.text.substring(startIndex, endIndex);
+
+            return +distanceStr / 1.609;
+        }
         return 0;
     }
 
