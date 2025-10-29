@@ -12,7 +12,6 @@ function parseTweets(runkeeper_tweets) {
 	});
 	//TODO: Filter to just the written tweets
 	writtenTweets = tweet_array.filter(tweet => tweet.written === true);
-	console.log("'", writtenTweets[3].writtenText, "'");
 }
 
 function addEventHandlerForSearch() {
