@@ -23,4 +23,4 @@ None
 
 
 5. Is there anything special we need to know in order to run your code?
-No
+The extra search function highlights the search input anywhere in a tweet (including the auto generated portion), but is technically only checking if the written portion contains it.
