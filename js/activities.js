@@ -11,6 +11,7 @@ function parseTweets(runkeeper_tweets) {
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
 	const completedArr = tweet_array.filter(tweet => tweet.source === "completed_event");
+	
 	const activityCounts = {};
 	completedArr.forEach(tweet => {
 		const activity = tweet.activityType;
@@ -26,6 +27,23 @@ function parseTweets(runkeeper_tweets) {
 		};
 	});
 	activityCountArr.sort((a, b) => b.count - a.count);
+
+	// Array for top 3 activity types & distance
+	const plot2Data = [];
+	const topActivities = activityCountArr.slice(0, 3).map(tweet => tweet.activityType);
+	const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	const topActivitiesArr = completedArr.filter(tweet =>
+		topActivities.includes(tweet.activityType) &&
+		tweet.distance > 0
+	);
+
+	topActivitiesArr.forEach(tweet => {
+		plot2Data.push({
+			day: dayNames[tweet.time.getDay()],
+			distance: tweet.distance,
+			activityType: tweet.activityType
+		});
+	});
 
 	activity_vis_spec = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -49,6 +67,81 @@ function parseTweets(runkeeper_tweets) {
 	  }
 	};
 	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
+
+	distance_vis_spec = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A scatterplot graph of the distances of the top three most tweeted-about activites by day of week.",
+	  "data": {
+	    "values": plot2Data
+	  },
+	  //TODO: Add mark and encoding
+	  "mark": "point",
+	  "encoding": {
+		"x": {
+			"field": "day",
+			"type": "nominal",
+			"title": "Time (Day of Week)",
+			"sort": dayNames,
+		},
+		"y": {
+			"field": "distance",
+			"type": "quantitative",
+			"title": "Distance (mi)"
+		},
+		"color": {
+			"field": "activityType",
+			"type": "nominal",
+			"title": "Activity Type"
+		}
+	  }
+	};
+	vegaEmbed('#distanceVis', distance_vis_spec, {actions:false});
+
+	mean_distance_vis_spec = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A scatterplot graph of the distances of the top three most tweeted-about activites by day of week.",
+	  "data": {
+	    "values": plot2Data
+	  },
+	  //TODO: Add mark and encoding
+	  "mark": "point",
+	  "encoding": {
+		"x": {
+			"field": "day",
+			"type": "nominal",
+			"title": "Time (Day of Week)",
+			"sort": dayNames,
+		},
+		"y": {
+			"field": "distance",
+			"type": "quantitative",
+			"title": "Distance (mi)",
+			"aggregate": "mean"
+		},
+		"color": {
+			"field": "activityType",
+			"type": "nominal",
+			"title": "Activity Type"
+		}
+	  }
+	};
+
+	let showingMeans = false;
+
+	const showMeansButton = document.getElementById('aggregate');
+	const activityVis = document.getElementById('activityVis');
+
+	showMeansButton.addEventListener('click', function() {
+		if (showingMeans) {
+			vegaEmbed('#distanceVis', distance_vis_spec, {actions:false});
+			showMeansButton.textContent = "Show Means"
+		}
+		else {
+			vegaEmbed('#distanceVis', mean_distance_vis_spec, {actions:false});
+			showMeansButton.textContent = "Show All Activities";
+		}
+		showingMeans = !showingMeans;
+	}) 
 
 	console.log("Total completed tweets:", completedArr.length);
 	console.log("Tweet Activity Type: " + tweet_array[10].activityType);
