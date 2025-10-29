@@ -51,7 +51,6 @@ function parseTweets(runkeeper_tweets) {
 	  "data": {
 	    "values": activityCountArr
 	  },
-	  //TODO: Add mark and encoding
 	  "mark": "bar",
 	  "encoding": {
 		"x": {
@@ -74,7 +73,6 @@ function parseTweets(runkeeper_tweets) {
 	  "data": {
 	    "values": plot2Data
 	  },
-	  //TODO: Add mark and encoding
 	  "mark": "point",
 	  "encoding": {
 		"x": {
@@ -103,7 +101,6 @@ function parseTweets(runkeeper_tweets) {
 	  "data": {
 	    "values": plot2Data
 	  },
-	  //TODO: Add mark and encoding
 	  "mark": "point",
 	  "encoding": {
 		"x": {
@@ -115,7 +112,7 @@ function parseTweets(runkeeper_tweets) {
 		"y": {
 			"field": "distance",
 			"type": "quantitative",
-			"title": "Distance (mi)",
+			"title": "Mean of Distance (mi)",
 			"aggregate": "mean"
 		},
 		"color": {
@@ -142,16 +139,6 @@ function parseTweets(runkeeper_tweets) {
 		}
 		showingMeans = !showingMeans;
 	}) 
-
-	console.log("Total completed tweets:", completedArr.length);
-	console.log("Tweet Activity Type: " + tweet_array[10].activityType);
-	console.log("Tweet text: " + tweet_array[10].text);
-	console.log("Tweet Time: " + tweet_array[10].time);
-	console.log("Tweet Type: " + tweet_array[10].source);
-	console.log("Distance: " + tweet_array[10].distance);
-	console.log("Contains run: " + tweet_array[10].text.includes("run"));
-	console.log(tweet_array[10].written);
-
 
 	//TODO: create the visualizations which group the three most-tweeted activities by the day of the week.
 	//Use those visualizations to answer the questions about which activities tended to be longest and when.

@@ -29,11 +29,11 @@ class Tweet {
 
     //returns a boolean, whether the text includes any content written by the person tweeting.
     get written():boolean {
-        if (this.text.includes("Check it out!") || this.text.includes("@Runkeeper Live") || this.text.includes("TomTom MySports Watch")) {
-            return false;
+        if (this.text.includes(" - ") && !this.text.includes("TomTom MySports Watch")) {
+            return true;
         }
         else {
-            return true;
+            return false;
         }
     }
 
@@ -43,7 +43,7 @@ class Tweet {
         }
         //TODO: parse the written text from the tweet
         const startMarker = " - ";
-        const endMarker = "https://t.co/";
+        const endMarker = " https://t.co/";
 
         const startIndex = this.text.indexOf(startMarker) + startMarker.length;
         const endIndex = this.text.indexOf(endMarker, startIndex);
