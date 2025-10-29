@@ -18,18 +18,29 @@ function parseTweets(runkeeper_tweets) {
 function addEventHandlerForSearch() {
 	//TODO: Search the written tweets as text is entered into the search box, and add them to the table
 	var textInput = document.getElementById('textFilter')
+	document.getElementById('searchCount').innerHTML = 0;
+	document.getElementById('searchText').innerHTML = '';
+
 	textInput.addEventListener('input', (event) => {
 		const searchTerm = event.target.value.toLowerCase();
 		document.getElementById('searchText').innerHTML = searchTerm;
-		console.log('Search term:', searchTerm);
-		if (searchTerm.length === 0) {
-			// empty table
+		var filteredTweets = writtenTweets.filter(tweet => tweet.writtenText.toLowerCase().includes(searchTerm));
+		const tweetTable = document.getElementById('tweetTable');
+		tweetTable.innerHTML = '';
+
+		if (searchTerm.length === 0 || filteredTweets.length === 0) {
 			document.getElementById('searchCount').innerHTML = 0;
+			tweetTable.innerHTML = '';
 		}
 		else {
-			var filteredTweets = writtenTweets.filter(tweet => tweet.writtenText.toLowerCase().includes(searchTerm));
 			document.getElementById('searchCount').innerHTML = filteredTweets.length;
 			// populate table
+
+			for (i = 0; i < filteredTweets.length; i++) {
+				const tweetData = filteredTweets[i].getHTMLTableRow(i, searchTerm);
+				const row = tweetTable.insertRow();
+				row.innerHTML = tweetData;
+			}
 		}
 
 	})

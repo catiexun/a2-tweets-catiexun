@@ -19,7 +19,7 @@ function parseTweets(runkeeper_tweets) {
 		tweet_type = tweet_array[i].source;
 		if (tweet_type == "completed_event") {
 			completed_count += 1;
-			if (tweet_array[i].written == true) {
+			if (tweet_array[i].written === true) {
 				written_count += 1;
 			}
 		}
@@ -38,7 +38,7 @@ function parseTweets(runkeeper_tweets) {
 	live_pct = math.format((live_count/tweet_array.length)*100, {notation: 'fixed', precision: 2});
 	achievement_pct = math.format((achievement_count/tweet_array.length)*100, {notation: 'fixed', precision: 2});
 	misc_pct = math.format((misc_count/tweet_array.length)*100, {notation: 'fixed', precision: 2});
-	written_pct = math.format((written_count/tweet_array.length)*100, {notation: 'fixed', precision: 2});
+	written_pct = math.format((written_count/completed_count)*100, {notation: 'fixed', precision: 2});
 
 	//This line modifies the DOM, searching for the tag with the numberTweets ID and updating the text.
 	//It works correctly, your task is to update the text of the other tags in the HTML file!

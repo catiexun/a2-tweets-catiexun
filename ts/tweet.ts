@@ -129,8 +129,20 @@ class Tweet {
         return 0;
     }
 
-    getHTMLTableRow(rowNumber:number):string {
+    getHTMLTableRow(rowNumber:number, searchTerm: string=''):string {
         //TODO: return a table row which summarizes the tweet with a clickable link to the RunKeeper activity
-        return "<tr></tr>";
+        var url = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
+        var textHyperlink = this.text.replace(url,"<a href='$1'>$1</a>"); 
+        
+        let displayText = textHyperlink;
+        if (searchTerm && searchTerm.length > 0) {
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            displayText = displayText.replace(regex, '<mark>$1</mark>');
+        }
+        return "<tr>" +
+            "<td>" + (rowNumber + 1) + "</td>" +
+            "<td>" + this.activityType + "</td>" +
+            "<td>" + displayText + "</td>" +
+        "</tr>";
     }
 }
